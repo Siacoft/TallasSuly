@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Tallas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+        <div class="d-flex">
+        <!-- Menú Lateral -->
+        <nav class="sidebar bg-dark text-white p-3">
+            <div class="text-center">
+                <img src="/logo.jpeg" alt="Logo Empresa" class="logo">
+                <h4 class="mt-2">Mi Empresa</h4>
+                <p class="text-white">Usuario: <%= user %></p>
+            </div>
+            <ul class="nav flex-column mt-3">
+                <li class="nav-item">
+                    <a href="/dashboard" class="nav-link text-white">🏠 Inicio</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/empleados" class="nav-link text-white">👥 Empleados</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/tallas" class="nav-link text-white">📏 Tallas</a>
+                </li>
+                <li class="nav-item mt-3">
+                    <a href="/logout" class="btn btn-danger w-100">Cerrar Sesión</a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Contenido Principal -->
+        <div class="content p-4 w-100">
+            <h2>Gestión de Tallas</h2>
+
+            <!-- Formulario para Ingresar Tallas -->
+            <form action="/tallas" method="POST">
+                <div class="mb-3">
+                    <label>Empleado</label>
+                    <select name="empleado_id" class="form-control" required>
+                        <option value="">Seleccione un empleado</option>
+                        <% empleados.forEach(empleado => { %>
+                            <option value="<%= empleado.id %>"><%= empleado.nombre %></option>
+                        <% }); %>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label>Prenda de Vestir</label>
+                    <select name="prenda_id" class="form-control" required>
+                        <option value="">Seleccione una prenda</option>
+                        <% prendas.forEach(prenda => { %>
+                            <option value="<%= prenda.id %>"><%= prenda.nombre %></option>
+                        <% }); %>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label>Talla</label>
+                    <select name="talla" class="form-control" required>
+                        <option value="">Seleccione una talla</option>
+                        <option value="XS">XS</option>
+                        <option value="S">S</option>
+                        <option value="M">M</option>
+                        <option value="L">L</option>
+                        <option value="XL">XL</option>
+                        <option value="XXL">XXL</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label>Color</label>
+                    <input type="text" name="color" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label>Observaciones</label>
+                    <textarea name="observaciones" class="form-control"></textarea>
+                </div>
+                <div class="d-flex justify-content-end mt-3">
+                    <button type="submit" class="btn btn-primary me-2">💾 Grabar</button>
+                    <a href="/" class="btn btn-secondary">🔙 Volver</a>
+                </div>                
+            </form>
+
+            <!-- Tabla con el Detalle de Tallas -->
+            <div class="table-responsive">
+                <h3 class="mt-4">Detalle de Tallas Ingresadas</h3>
+                <table class="table table-striped mt-3">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Empleado</th>
+                            <th>Prenda</th>
+                            <th>Talla</th>
+                            <th>Color</th>
+                            <th>Observaciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% if (tallas.length === 0) { %>
+                            <tr>
+                                <td colspan="6" class="text-center">No hay registros de tallas.</td>
+                            </tr>
+                        <% } else { %>
+                            <% tallas.forEach(talla => { %>
+                                <tr>
+                                    <td><%= talla.id %></td>
+                                    <td><%= talla.empleado %></td>
+                                    <td><%= talla.prenda %></td>
+                                    <td><%= talla.talla %></td>
+                                    <td><%= talla.color %></td>
+                                    <td><%= talla.observaciones %></td>
+                                </tr>
+                            <% }); %>
+                        <% } %>
+                    </tbody>
+                </table>
+                <div class="d-flex justify-content-end flex-wrap mt-4">
+                    <a href="/reporte-excel" class="btn btn-success me-2 mb-2">📥 Excel</a>
+                    <a href="/reporte-pdf" class="btn btn-danger mb-2">📥 PDF</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function toggleMenu() {
+            document.querySelector('.sidebar').classList.toggle('show');
+        }
+        </script>
+        
+</body>
+</html>
