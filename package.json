@@ -18,6 +18,7 @@
   "homepage": "https://github.com/Siacoft/TallasSuly#readme",
   "description": "",
   "dependencies": {
+    "chart.js": "^4.4.8",
     "dotenv": "^16.4.7",
     "ejs": "^3.1.10",
     "exceljs": "^4.4.0",

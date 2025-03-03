@@ -24,9 +24,10 @@ app.get('/', (req, res) => {
 
 // Autenticación del Usuario
 app.post('/login', (req, res) => {
-    const { username, password } = req.body;
+    const { username, password,nombre } = req.body;
+    console.log(req.body);
     connection.query('SELECT usuario,clave as password,nombre FROM siausuarios WHERE usuario = ?', [username], (err, results) => {
-        console.log(results,' clave : ',results[0].password);
+        console.log(results,' clave : ',results[0].password,' Usuario :',results[0].username,' Nombre : ',results[0].nombre);
         const claveusuario = desencriptarclave(results[0].password);
         console.log('clave desencriptada :', claveusuario);
 
@@ -35,8 +36,10 @@ app.post('/login', (req, res) => {
             console.log('Usuario Ingreso : ',username);
             //bcrypt.compare(password, results[0].password, (err, match) => {
                 if (password === claveusuario) {
-                    req.session.user = results[0].usuario;
+                    req.session.user = {user: results[0].usuario, nombre: results[0].nombre};
+                    console.log(' Usuario Dashboard : ',req.session.user.user,' Nombre Dashboard : ',req.session.user.nombre);
                     res.redirect('/dashboard');
+                    //res.render('/dashboard', {user: req.session.user, nombre: req.session.nombre });//
                 } else {
                     res.render('login', { message: 'Contraseña incorrecta' });
                 }
@@ -50,7 +53,7 @@ app.post('/login', (req, res) => {
 // Página protegida
 app.get('/dashboard', (req, res) => {
     if (!req.session.user) return res.redirect('/');
-    res.render('dashboard', { user: req.session.user });
+    res.render('dashboard', { user: req.session.user});
 });
 
 // Logout
